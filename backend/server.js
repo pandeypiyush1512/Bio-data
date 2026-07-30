@@ -70,12 +70,12 @@ app.post('/api/generate-pdf', async (req, res) => {
     // Clean up after 30 minutes
     setTimeout(() => { try { fs.unlinkSync(filepath); } catch {} }, 30 * 60 * 1000);
 
-    // Also keep in memory for download endpoint
+    // Store the disk filepath keyed by timestamp for download endpoint
     const pdfKey = Date.now().toString();
-    pdfStore.set(pdfKey, { buffer: pdfBuffer, name: fullName, filename });
+    pdfStore.set(pdfKey, { filepath, name: fullName, filename });
     setTimeout(() => pdfStore.delete(pdfKey), 30 * 60 * 1000);
 
-    console.log('PDF generated successfully, size:', pdfBuffer.length, 'bytes');
+    console.log('PDF generated successfully, size:', pdfBuffer.length, 'bytes, file:', filename);
     res.json({ 
       key: pdfKey, 
       filename: `${fullName}_Biodata.pdf`,
@@ -88,26 +88,29 @@ app.post('/api/generate-pdf', async (req, res) => {
   }
 });
 
-// View PDF inline in browser (fallback)
+// View PDF inline in browser (fallback endpoint)
 app.get('/api/view-pdf/:key', (req, res) => {
   const entry = pdfStore.get(req.params.key);
   if (!entry) return res.status(404).send('PDF not found or expired');
+  if (!fs.existsSync(entry.filepath)) return res.status(404).send('PDF file no longer on disk');
   res.removeHeader('X-Frame-Options');
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `inline; filename="${entry.name}_Biodata.pdf"`);
   res.setHeader('Content-Security-Policy', "frame-ancestors *");
-  res.setHeader('Content-Length', entry.buffer.length);
-  res.send(entry.buffer);
+  fs.createReadStream(entry.filepath).pipe(res);
 });
 
-// Download PDF
+// Download PDF — reads from disk, pipes as stream (most reliable for Edge/Chrome)
 app.get('/api/download-pdf/:key', (req, res) => {
   const entry = pdfStore.get(req.params.key);
   if (!entry) return res.status(404).json({ error: 'PDF not found or expired' });
+  if (!fs.existsSync(entry.filepath)) return res.status(404).json({ error: 'PDF file no longer on disk' });
+
+  const downloadName = `${entry.name}_Biodata.pdf`;
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="${entry.name}_Biodata.pdf"`);
-  res.setHeader('Content-Length', entry.buffer.length);
-  res.send(entry.buffer);
+  res.setHeader('Content-Disposition', `attachment; filename="${downloadName}"`);
+  // Stream directly from disk — avoids any buffer truncation issues
+  fs.createReadStream(entry.filepath).pipe(res);
 });
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
