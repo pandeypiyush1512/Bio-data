@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
+frontend/dist/
+frontend/.vite/
+
+# Generated PDFs and uploads
+backend/generated/
+backend/uploads/
+backend/test-output.pdf
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temp / debug scripts
+check-env.ps1
+check-node.ps1
+git-check.ps1
+test-pdf.js
+env-check-result.txt
+node-check.txt
+git-check.txt
+
+# OS
+.DS_Store
+Thumbs.db
