@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { FileText, Download, Eye, ArrowLeft, Loader2, CheckCircle, RefreshCw, ExternalLink } from 'lucide-react';
 
-const BACKEND = 'http://localhost:5000';
+const BACKEND = import.meta.env.VITE_BACKEND_URL || '';
 
 export default function GeneratePDF({ onBack }) {
   const { formData } = useForm();
@@ -55,7 +55,7 @@ export default function GeneratePDF({ onBack }) {
             <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center">
               <FileText size={16} className="text-white" />
             </div>
-            <h1 className="font-bold text-gray-900">Generate PDF</h1>
+            <h1 className="font-bold text-gray-900">QuickResume</h1>
           </div>
         </div>
       </header>

@@ -1,7 +1,7 @@
 {
-  "name": "biodata-backend",
+  "name": "quickresume-backend",
   "version": "1.0.0",
-  "description": "Biodata CV Generator - Express Backend",
+  "description": "QuickResume — Express Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,13 +10,10 @@
   "dependencies": {
     "cors": "2.8.5",
     "express": "4.18.2",
-    "multer": "^2.0.1",
-    "puppeteer": "^24.15.0"
+    "multer": "2.0.1",
+    "puppeteer": "24.15.0"
   },
   "devDependencies": {
     "nodemon": "3.0.2"
-  },
-  "allowScripts": {
-    "puppeteer@24.15.0": true
   }
 }

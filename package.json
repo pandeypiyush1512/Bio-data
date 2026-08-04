@@ -1,0 +1,13 @@
+{
+  "name": "quickresume",
+  "version": "1.0.0",
+  "description": "QuickResume — No login. No signup. Generate & share instantly.",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && node server.js",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

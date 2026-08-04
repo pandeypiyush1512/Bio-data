@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: quickresume
+    runtime: node
+    plan: free
+
+    # Render will run these from the repo root
+    buildCommand: |
+      cd frontend && npm install && npm run build
+      cd ../backend && npm install
+    startCommand: cd backend && node server.js
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=512
+
+    # Puppeteer needs these Chrome flags — already set in pdfGenerator.js
+    # No additional env needed for headless Chrome on Render

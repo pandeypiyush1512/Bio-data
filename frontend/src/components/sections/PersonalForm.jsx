@@ -76,7 +76,7 @@ export default function PersonalForm() {
     try {
       const fd = new FormData();
       fd.append('photo', file);
-      const res = await axios.post('http://localhost:5000/api/upload-photo', fd);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || ''}/api/upload-photo`, fd);
       updatePersonal({ photoUrl: res.data.url });
       toast.success('Photo uploaded!');
     } catch {

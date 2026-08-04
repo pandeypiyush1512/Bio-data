@@ -73,8 +73,8 @@ export default function Layout() {
                 <FileText size={18} className="text-white" />
               </div>
               <div>
-                <h1 className="text-base font-bold text-gray-900 leading-tight">Biodata Generator</h1>
-                <p className="text-xs text-gray-400">Professional CV Builder</p>
+                <h1 className="text-base font-bold text-gray-900 leading-tight">QuickResume</h1>
+                <p className="text-xs text-gray-400">No login. No signup. Generate & share instantly.</p>
               </div>
             </div>
           </div>
